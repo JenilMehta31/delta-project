@@ -11,7 +11,7 @@ const port = 3000;
 const ejsMate = require("ejs-mate"); 
 const ExpressError = require("./utils/ExpressError.js"); 
 const session = require("express-session");
-const MongoStore = require("connect-mongo").default;
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -39,8 +39,8 @@ const store = MongoStore.create({
     touchAfter: 24*60*60,
 });
 
-store.on("error", () => {
-    console.log("error in mongo session store", err);
+store.on("error", (err) => {
+    console.log("Error in Mongo session store", err);
 });
 
 const sessionOptions = {
@@ -71,7 +71,7 @@ app.use((req,res,next) => {
     res.locals.notFound  = req.flash("notFound");
     res.locals.currUser = req.user;
     next();
-})
+});
 
 
 // app.get("/demouser", async (req,res) => {

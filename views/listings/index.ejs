@@ -1,0 +1,145 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="filters-bar">
+
+    <!-- Categories -->
+    <div class="d-flex overflow-auto">
+
+        <div class="filter text-center mx-3">
+            <i class="fa-solid fa-mountain"></i>
+            <p>Camping</p>
+        </div>
+
+        <div class="filter text-center mx-3">
+            <i class="fa-solid fa-house"></i>
+            <p>Rooms</p>
+        </div>
+
+        <div class="filter text-center mx-3">
+            <i class="fa-solid fa-water"></i>
+            <p>Lake</p>
+        </div>
+
+        <div class="filter text-center mx-3">
+            <i class="fa-solid fa-snowflake"></i>
+            <p>Arctic</p>
+        </div>
+
+        <div class="filter text-center mx-3">
+            <i class="fa-solid fa-umbrella-beach"></i>
+            <p>Beach</p>
+        </div>
+
+        <div class="filter text-center mx-3">
+            <i class="fa-solid fa-tree"></i>
+            <p>Forest</p>
+        </div>
+
+    </div>
+
+    <!-- Right Side -->
+    <div class="d-flex align-items-center">
+
+        <button class="btn btn-outline-secondary rounded-pill me-3">
+            <i class="fa-solid fa-sliders"></i>
+            Filters
+        </button>
+
+        <div class="tax-toggle">
+
+    <span>Display total after taxes</span>
+
+    <div class="form-check form-switch m-0">
+        <input
+            class="form-check-input"
+            type="checkbox"
+            id="gstToggle">
+    </div>
+
+</div>
+    </div>
+
+</div>
+
+<div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 mt-3">
+
+    <% for(let list of allListings){ %>
+
+    <div class="col mb-4">
+
+        <a href="/listings/<%= list._id %>" class="card-link">
+
+            <div class="card h-100 card-hover listing-card">
+
+                <img
+                    src="<%= list.image?.url || list.image %>"
+                    class="card-img-top listing-img"
+                    alt="listing image"
+                >
+
+                <div class="card-body p-3">
+
+                    <p class="card-title mb-1">
+                        <b><%= list.title %></b>
+                    </p>
+
+                    <p class="card-text">
+
+                        ₹
+                        <span
+                            class="price"
+                            data-price="<%= list.price %>"
+                        >
+                            <%= list.price.toLocaleString("en-IN") %>
+                        </span>
+
+                        / night
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+    <% } %>
+
+</div>
+
+<script>
+
+const toggle = document.getElementById("gstToggle");
+
+toggle.addEventListener("change", function(){
+
+    const prices = document.querySelectorAll(".price");
+
+    prices.forEach(price =>{
+
+        const originalPrice = Number(price.dataset.price);
+
+        if(this.checked){
+
+            const gstPrice = Math.round(originalPrice * 1.18);
+
+            price.innerHTML =
+                gstPrice.toLocaleString("en-IN") +
+                ' <span class="text-success">(+18% GST)</span>';
+
+        }
+
+        else{
+
+            price.innerHTML =
+                originalPrice.toLocaleString("en-IN");
+
+        }
+
+    });
+
+});
+
+</script>
